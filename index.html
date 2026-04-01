@@ -447,7 +447,7 @@
 <body>
 
 <header>
-  <img src="https://fnp-intel-monitor.web.app/fnp-logo.png" alt="Logo FNP" style="max-height: 120px; margin-bottom: 1rem; display: block; margin-left: auto; margin-right: auto;">
+  <img src="https://fnp-intel-monitor.web.app/fnp-logo.png" alt="Logo FNP" style="max-height: 85px; margin-bottom: 1.5rem; display: block; margin-left: auto; margin-right: auto;">
   <div class="header-badge">19º Anuário Brasileiro de Segurança Pública — 2025</div>
   <h1>Ranking dos Municípios com Maiores<br>Problemas de Segurança Pública</h1>
   <p>Dados referentes ao ano de 2024. Municípios com população igual ou superior a 100 mil habitantes.
@@ -818,8 +818,8 @@ function buildRanking() {
   dataMDIPProp.slice(0, 5).forEach(d => attemptAdd(d, 'mdip_prop', d));
   // 3. Estupro — Top 5
   dataEstupro.slice(0, 5).forEach(d => attemptAdd(d, 'estupro', d));
-  // 4. Celular — Expandido para Top 10 a pedido do usuário
-  dataCelular.slice(0, 10).forEach(d => attemptAdd(d, 'celular', d));
+  // 4. Celular — Retornado para Top 5 a pedido do usuário
+  dataCelular.slice(0, 5).forEach(d => attemptAdd(d, 'celular', d));
 
   // REGRAS SECUNDÁRIAS / COMPLEMENTARES (Apenas injetam tags e dados extras em quem JÁ ESTÁ na lista)
   // Letalidade Absoluta (Quadro 02) inteira cruzada: garante que Jequié receba seus dados de MDIP Absolute no popup e a tag laranja.
