@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ranking de Segurança Pública 2024 | 19º Anuário Brasileiro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #071220; /* FNP Deep Blue Background */
+      --bg-card: #0d2139; /* FNP Card Blue */
+      --bg-card2: #143255;
+      --fnp-green: #009640;
+      --fnp-yellow: #ffcb05;
+      --accent-red: #ef4444;
+      --accent-orange: #f97316;
+      --accent-yellow: #eab308;
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --border: #1e3a5f;
+      --border-glow: rgba(0, 150, 64, 0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: linear-gradient(135deg, #071220 0%, #003a70 50%, #071220 100%);
+      border-bottom: 3px solid var(--fnp-green);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0, 150, 64, 0.15), transparent);
+      pointer-events: none;
+    }
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 203, 5, 0.15);
+      border: 1px solid rgba(255, 203, 5, 0.4);
+      border-radius: 2rem;
+      padding: 0.4rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--fnp-yellow);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+    header h1 {
+      font-size: clamp(1.6rem, 4vw, 2.8rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, #ffffff, #a7f3d0, #ffffff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+    header p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      max-width: 650px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    .header-stats {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .header-stat {
+      text-align: center;
+    }
+    .header-stat span {
+      display: block;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #a78bfa;
+    }
+    .header-stat small {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Layout ── */
+    .container { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+
+    /* ── Tabs ── */
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      padding-bottom: 0;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      padding: 0.75rem 1.25rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.25s;
+      font-family: 'Inter', sans-serif;
+    }
+    .tab-btn:hover { color: var(--text-primary); }
+    .tab-btn.active {
+      color: var(--text-primary);
+      border-bottom-color: var(--fnp-green);
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ── Section title ── */
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .section-title .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* ── Top Ranking Card ── */
+    .ranking-grid { display: grid; gap: 1rem; }
+
+    .rank-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.25rem 1.5rem;
+      display: grid;
+      grid-template-columns: 3rem 1fr auto;
+      align-items: center;
+      gap: 1rem;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .rank-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      border-radius: 4px 0 0 4px;
+    }
+    .rank-card:hover {
+      border-color: var(--fnp-green);
+      transform: translateX(4px);
+      background: var(--bg-card2);
+    }
+
+    /* Colors by position */
+    .rank-1 { border-color: rgba(239,68,68,0.5); }
+    .rank-1::before { background: var(--accent-red); }
+    .rank-2 { border-color: rgba(249,115,22,0.4); }
+    .rank-2::before { background: var(--accent-orange); }
+    .rank-3 { border-color: rgba(234,179,8,0.4); }
+    .rank-3::before { background: var(--accent-yellow); }
+    .rank-4, .rank-5 { border-color: rgba(249,115,22,0.25); }
+    .rank-4::before, .rank-5::before { background: rgba(249,115,22,0.6); }
+    .rank-6, .rank-7, .rank-8 { border-color: rgba(234,179,8,0.2); }
+    .rank-6::before, .rank-7::before, .rank-8::before { background: rgba(234,179,8,0.6); }
+
+    .rank-number {
+      font-size: 1.5rem;
+      font-weight: 900;
+      text-align: center;
+    }
+    .rank-1 .rank-number { color: var(--accent-red); }
+    .rank-2 .rank-number { color: var(--accent-orange); }
+    .rank-3 .rank-number { color: var(--accent-yellow); }
+    .rank-4 .rank-number, .rank-5 .rank-number { color: #fb923c; }
+    .rank-6 .rank-number, .rank-7 .rank-number, .rank-8 .rank-number { color: #fbbf24; }
+    .rank-number:not(.rank-1 .rank-number, .rank-2 .rank-number, .rank-3 .rank-number, .rank-4 .rank-number, .rank-5 .rank-number, .rank-6 .rank-number, .rank-7 .rank-number, .rank-8 .rank-number) { color: var(--text-secondary); }
+
+    .rank-info h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    .rank-info .uf-badge {
+      display: inline-block;
+      background: rgba(99,102,241,0.15);
+      border: 1px solid rgba(99,102,241,0.3);
+      border-radius: 0.3rem;
+      padding: 0.1rem 0.4rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #818cf8;
+      margin-right: 0.5rem;
+    }
+    .rank-info .tags {
+      display: flex;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+      margin-top: 0.4rem;
+    }
+    .tag {
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 0.15rem 0.5rem;
+      border-radius: 2rem;
+      border: 1px solid;
+    }
+    .tag-capital { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.3); color: #e2e8f0; }
+    .tag-mvi { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.4); color: #fca5a5; }
+    .tag-mdip { background: rgba(249,115,22,0.1); border-color: rgba(249,115,22,0.4); color: #fdba74; }
+    .tag-estupro { background: rgba(168,85,247,0.1); border-color: rgba(168,85,247,0.4); color: #c4b5fd; }
+    .tag-celular { background: rgba(59,130,246,0.1); border-color: rgba(59,130,246,0.4); color: #93c5fd; }
+
+    .rank-score {
+      text-align: right;
+    }
+    .rank-score .score-val {
+      font-size: 1.6rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #f97316, #ef4444);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .rank-score small {
+      display: block;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      margin-top: -0.2rem;
+    }
+
+    /* Bar chart */
+    .bar-chart {
+      margin-top: 0.6rem;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 1s ease;
+    }
+
+    /* ── Data Tables ── */
+    .data-table-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    .table-header {
+      padding: 1rem 1.5rem;
+      background: var(--bg-card2);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .table-header h3 { font-size: 0.9rem; font-weight: 700; }
+    .table-header .source {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      background: rgba(99,102,241,0.1);
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 0.4rem;
+      padding: 0.2rem 0.6rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th {
+      background: rgba(30,41,59,0.8);
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    td {
+      padding: 0.8rem 1rem;
+      font-size: 0.88rem;
+      border-bottom: 1px solid rgba(30,41,59,0.5);
+      vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(30,41,59,0.3); }
+    .pos { font-weight: 800; color: var(--accent-orange); width: 3rem; }
+    .municipio-cell { font-weight: 600; }
+    .uf-pill {
+      display: inline-block;
+      background: rgba(99,102,241,0.15);
+      border: 1px solid rgba(99,102,241,0.3);
+      border-radius: 0.3rem;
+      padding: 0.1rem 0.4rem;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #818cf8;
+    }
+    .value-cell {
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    .value-red { color: #f87171; }
+    .value-orange { color: #fb923c; }
+    .value-purple { color: #c084fc; }
+    .value-blue { color: #60a5fa; }
+    .mini-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .mini-bar-fill {
+      height: 6px;
+      border-radius: 3px;
+      min-width: 4px;
+      flex-shrink: 0;
+    }
+
+    /* ── Legend ── */
+    .legend {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .legend h4 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.75rem;
+    }
+    .legend-items {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+    .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+    /* ── Methodoly note ── */
+    .method-note {
+      background: rgba(99,102,241,0.07);
+      border: 1px solid rgba(99,102,241,0.25);
+      border-radius: 0.75rem;
+      padding: 1rem 1.5rem;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+    .method-note strong { color: #a5b4fc; }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .rank-card { grid-template-columns: 2.5rem 1fr; }
+      .rank-score { display: none; }
+      th, td { padding: 0.6rem 0.75rem; }
+    }
+
+    /* Modal Details */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px);
+      z-index: 999; display: none; align-items: center; justify-content: center; padding: 1rem;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-box {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 1rem;
+      width: 100%; max-width: 450px; padding: 2rem; position: relative; color: var(--text-primary);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+    .modal-close {
+      position: absolute; top: 1rem; right: 1rem; background: none; border: none;
+      color: var(--text-muted); cursor: pointer; font-size: 1.5rem; line-height: 1; padding: 0.5rem;
+    }
+    .modal-close:hover { color: var(--text-primary); }
+    .modal-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.2rem; }
+    .modal-subtitle { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; }
+    .modal-details-list { display: flex; flex-direction: column; gap: 0.8rem; }
+    .detail-item {
+      background: var(--bg-card2); padding: 1rem; border-radius: 0.5rem; border: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .detail-label { font-size: 0.85rem; font-weight: 700; color: var(--text-primary); }
+    .detail-value { text-align: right; }
+    .detail-value small { display: block; font-size: 0.7rem; color: var(--text-muted); }
+    .detail-value strong { font-size: 1.1rem; color: var(--text-primary); }
+    .rank-card { cursor: pointer; } 
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="https://fnp-intel-monitor.web.app/fnp-logo.png" alt="Logo FNP" style="max-height: 40px; margin-bottom: 1rem; display: block; margin-left: auto; margin-right: auto;">
+  <div class="header-badge">19º Anuário Brasileiro de Segurança Pública — 2025</div>
+  <h1>Ranking dos Municípios com Maiores<br>Problemas de Segurança Pública</h1>
+  <p>Dados referentes ao ano de 2024. Municípios com população igual ou superior a 100 mil habitantes.
+  Fonte: Fórum Brasileiro de Segurança Pública / Secretarias Estaduais de Segurança Pública.</p>
+  <div class="header-stats">
+    <div class="header-stat"><span>2024</span><small>Ano de referência</small></div>
+    <div class="header-stat"><span><span id="total-municipios">--</span></span><small>Municípios Analisados</small></div>
+    <div class="header-stat"><span>4</span><small>Indicadores (MVI, MDIP, Sexuais, Celulares)</small></div>
+    <div class="header-stat"><span>+100 mil</span><small>Habitantes mínimos</small></div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('geral', this)">Lista de Cidades Críticas</button>
+    <button class="tab-btn" onclick="switchTab('mvi', this)">Mortes Violentas Intencionais</button>
+    <button class="tab-btn" onclick="switchTab('mdip', this)">Letalidade Policial</button>
+    <button class="tab-btn" onclick="switchTab('estupro', this)">Crimes Sexuais</button>
+    <button class="tab-btn" onclick="switchTab('celular', this)">Roubo de Celulares</button>
+  </div>
+
+  <!-- ── TAB GERAL ── -->
+  <div id="tab-geral" class="tab-content active">
+
+    <div class="legend" style="margin-top: 1rem;">
+      <h4>Legenda das Categorias Analisadas</h4>
+      <div class="legend-items">
+        <div class="legend-item"><div class="legend-dot" style="background:#e2e8f0"></div> Capital do Estado</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div> Mortes Violentas Intencionais</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f97316"></div> Morte por Intervenção Policial</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6"></div> Estupros / Crimes Sexuais</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div> Roubo/Furto de Celulares</div>
+      </div>
+    </div>
+
+    <div class="section-title">
+      <span class="dot" style="background:#ef4444"></span>
+      Lista Unificada de Cidades Críticas — Segurança Pública 2024
+    </div>
+
+    <div class="ranking-grid" id="ranking-geral"></div>
+  </div>
+
+  <!-- ── TAB MVI ── -->
+  <div id="tab-mvi" class="tab-content">
+    <div class="section-title">
+      <span class="dot" style="background:#ef4444"></span>
+      Top 10 Municípios com Maiores Taxas de Mortes Violentas Intencionais — 2024
+    </div>
+    <div class="method-note">
+      Cidades com população superior ou igual a 100 mil habitantes. <strong>Taxa por 100 mil habitantes.</strong>
+      Inclui homicídios dolosos, latrocínio e lesão corporal seguida de morte. Quadro 01 do Anuário 2025.
+    </div>
+    <div class="data-table-wrap">
+      <div class="table-header">
+        <h3>Mortes Violentas Intencionais — Taxa por 100 mil hab.</h3>
+        <span class="source">Quadro 01 | Anuário 2025</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Posição</th>
+            <th>Município</th>
+            <th>UF</th>
+            <th>Taxa (Mortes Violentas)</th>
+            <th>N. Absoluto</th>
+            <th>Letalidade Policial (N.)</th>
+            <th>Proporção (%)</th>
+            <th>Visualização</th>
+          </tr>
+        </thead>
+        <tbody id="table-mvi"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── TAB MDIP ── -->
+  <div id="tab-mdip" class="tab-content">
+    <div class="section-title">
+      <span class="dot" style="background:#f97316"></span>
+      Municípios com Maiores Taxas de Mortes por Intervenção Policial — 2024
+    </div>
+    <div class="method-note">
+      Cidades com mais de 100 mil habitantes. <strong>Taxa por 100 mil habitantes.</strong>
+      Quadros 02 e 03 do Anuário 2025. O Quadro 03 lista cidades onde essas mortes representaram mais de 50% das mortes totais.
+    </div>
+
+    <div class="data-table-wrap">
+      <div class="table-header">
+        <h3>Top 10 Municípios — Taxa de Letalidade Policial por 100 mil hab.</h3>
+        <span class="source">Quadro 02 | Anuário 2025</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Posição</th>
+            <th>Município</th>
+            <th>UF</th>
+            <th>Taxa Letalidade Policial</th>
+            <th>Visualização</th>
+          </tr>
+        </thead>
+        <tbody id="table-mdip"></tbody>
+      </table>
+    </div>
+
+    <div class="data-table-wrap">
+      <div class="table-header">
+        <h3>Municípios onde Letalidade Policial representou mais de 50% das Mortes Totais — 2024</h3>
+        <span class="source">Quadro 03 | Anuário 2025</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Posição</th>
+            <th>Município</th>
+            <th>UF</th>
+            <th>Proporção (%)</th>
+            <th>Visualização</th>
+          </tr>
+        </thead>
+        <tbody id="table-mdip-proporcao"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── TAB ESTUPRO ── -->
+  <div id="tab-estupro" class="tab-content">
+    <div class="section-title">
+      <span class="dot" style="background:#8b5cf6"></span>
+      Top 50 Municípios com Maiores Taxas de Estupros — 2024
+    </div>
+    <div class="method-note">
+      Cidades com mais de 100 mil habitantes. <strong>Taxa por 100 mil habitantes.</strong>
+      Inclui estupro e estupro de vulnerável. Quadro 08 do Anuário 2025.
+    </div>
+    <div class="data-table-wrap">
+      <div class="table-header">
+        <h3>Taxa de Estupros por 100 mil hab. (Top 50)</h3>
+        <span class="source">Quadro 08 | Anuário 2025</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Posição</th>
+            <th>Município</th>
+            <th>UF</th>
+            <th>Taxa de Estupros</th>
+            <th>Visualização</th>
+          </tr>
+        </thead>
+        <tbody id="table-estupro"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── TAB CELULAR ── -->
+  <div id="tab-celular" class="tab-content">
+    <div class="section-title">
+      <span class="dot" style="background:#3b82f6"></span>
+      Top 20 Municípios com Maiores Taxas de Roubo/Furto de Celulares — 2024
+    </div>
+    <div class="method-note">
+      Cidades com mais de 100 mil habitantes. <strong>Taxa por 100 mil habitantes.</strong>
+      Inclui roubo e furto de celulares. Quadro 06 do Anuário 2025.
+    </div>
+    <div class="data-table-wrap">
+      <div class="table-header">
+        <h3>Taxa de Roubo/Furto de Celulares por 100 mil hab. (Top 20)</h3>
+        <span class="source">Quadro 06 | Anuário 2025</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Posição</th>
+            <th>Município</th>
+            <th>UF</th>
+            <th>Taxa de Celulares Subtraídos</th>
+            <th>Visualização</th>
+          </tr>
+        </thead>
+        <tbody id="table-celular"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Fonte: 19º Anuário Brasileiro de Segurança Pública (2025) — Fórum Brasileiro de Segurança Pública |
+  Secretarias Estaduais de Segurança Pública e/ou Defesa Social | ISP/RJ | IBGE. Dados referentes a 2024.
+</footer>
+
+<!-- Modal Dinâmico -->
+<div class="modal-overlay" id="details-modal" onclick="if(event.target===this) closeModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="modal-title" id="modal-title">Município</div>
+    <div class="modal-subtitle" id="modal-subtitle">UF • Composição do Score</div>
+    <div class="modal-details-list" id="modal-details-content">
+      <!-- Injected -->
+    </div>
+  </div>
+</div>
+
+<script>
+
+// ── Raw Data ──
+const dataMVI = [
+  { pos: 1,  municipio: "Maranguape",             uf: "CE", taxa: 79.86, nabs: 87,  mdip_n: 2,  pct_mdip: 2.3 },
+  { pos: 2,  municipio: "Jequié",                 uf: "BA", taxa: 77.64, nabs: 131, mdip_n: 44, pct_mdip: 33.6 },
+  { pos: 3,  municipio: "Juazeiro",               uf: "BA", taxa: 76.23, nabs: 194, mdip_n: 42, pct_mdip: 21.6 },
+  { pos: 4,  municipio: "Camaçari",               uf: "BA", taxa: 74.83, nabs: 239, mdip_n: 40, pct_mdip: 16.7 },
+  { pos: 5,  municipio: "Cabo de Santo Agostinho",uf: "PE", taxa: 73.28, nabs: 159, mdip_n: 4,  pct_mdip: 2.5 },
+  { pos: 6,  municipio: "São Lourenço da Mata",   uf: "PE", taxa: 73.03, nabs: 86,  mdip_n: 1,  pct_mdip: 1.2 },
+  { pos: 7,  municipio: "Simões Filho",           uf: "BA", taxa: 71.43, nabs: 86,  mdip_n: 22, pct_mdip: 25.6 },
+  { pos: 8,  municipio: "Caucaia",                uf: "CE", taxa: 68.67, nabs: 258, mdip_n: 9,  pct_mdip: 3.5 },
+  { pos: 9,  municipio: "Maracanaú",              uf: "CE", taxa: 68.49, nabs: 171, mdip_n: 5,  pct_mdip: 2.9 },
+  { pos: 10, municipio: "Feira de Santana",       uf: "BA", taxa: 65.20, nabs: 429, mdip_n: 68, pct_mdip: 15.9 },
+];
+
+const dataMDIP = [
+  { pos: 1,  municipio: "Santo Antônio de Jesus", uf: "BA", taxa: 30.2 },
+  { pos: 2,  municipio: "Itabaiana",              uf: "SE", taxa: 28.6 },
+  { pos: 3,  municipio: "Marituba",               uf: "PA", taxa: 27.7 },
+  { pos: 4,  municipio: "Eunápolis",              uf: "BA", taxa: 26.6 },
+  { pos: 5,  municipio: "Jequié",                 uf: "BA", taxa: 26.1 },
+  { pos: 6,  municipio: "Porto Seguro",           uf: "BA", taxa: 19.9 },
+  { pos: 7,  municipio: "Japeri",                 uf: "RJ", taxa: 19.6 },
+  { pos: 8,  municipio: "Macapá",                 uf: "AP", taxa: 19.3 },
+  { pos: 9,  municipio: "Lauro de Freitas",       uf: "BA", taxa: 18.8 },
+  { pos: 10, municipio: "Simões Filho",           uf: "BA", taxa: 18.3 },
+];
+
+const dataMDIPProp = [
+  { pos: 1,  municipio: "Itabaiana",              uf: "SE", pct: 75.6 },
+  { pos: 2,  municipio: "Santos",                 uf: "SP", pct: 66.1 },
+  { pos: 3,  municipio: "São Vicente",            uf: "SP", pct: 66.1 },
+  { pos: 4,  municipio: "Cambé",                  uf: "PR", pct: 61.9 },
+  { pos: 5,  municipio: "Arapongas",              uf: "PR", pct: 58.8 },
+  { pos: 6,  municipio: "Eunápolis",              uf: "BA", pct: 58.2 },
+  { pos: 7,  municipio: "Angra dos Reis",         uf: "RJ", pct: 55.0 },
+  { pos: 8,  municipio: "Nilópolis",              uf: "RJ", pct: 53.8 },
+  { pos: 9,  municipio: "Santo Antônio de Jesus", uf: "BA", pct: 52.4 },
+  { pos: 10, municipio: "Cametá",                 uf: "PA", pct: 51.9 },
+  { pos: 11, municipio: "Abaetetuba",             uf: "PA", pct: 51.2 },
+];
+
+const dataEstupro = [
+  { pos:1,  municipio:"Boa Vista",          uf:"RR", taxa:132.72 },
+  { pos:2,  municipio:"Sorriso",            uf:"MT", taxa:131.88 },
+  { pos:3,  municipio:"Ariquemes",          uf:"RO", taxa:122.50 },
+  { pos:4,  municipio:"Vilhena",            uf:"RO", taxa:108.73 },
+  { pos:5,  municipio:"Porto Velho",        uf:"RO", taxa:108.57 },
+  { pos:6,  municipio:"Rio Branco",         uf:"AC", taxa:106.74 },
+  { pos:7,  municipio:"Tangará da Serra",   uf:"MT", taxa:99.51 },
+  { pos:8,  municipio:"Santana",            uf:"AP", taxa:92.94 },
+  { pos:9,  municipio:"Barcarena",          uf:"PA", taxa:92.48 },
+  { pos:10, municipio:"Dourados",           uf:"MS", taxa:90.93 },
+  { pos:11, municipio:"Araucária",          uf:"PR", taxa:89.35 },
+  { pos:12, municipio:"Macapá",             uf:"AP", taxa:88.67 },
+  { pos:13, municipio:"Luziânia",           uf:"GO", taxa:86.35 },
+  { pos:14, municipio:"Francisco Beltrão",  uf:"PR", taxa:85.88 },
+  { pos:15, municipio:"Trindade",           uf:"GO", taxa:84.85 },
+  { pos:16, municipio:"Colombo",            uf:"PR", taxa:84.75 },
+  { pos:17, municipio:"Breves",             uf:"PA", taxa:84.31 },
+  { pos:18, municipio:"Planaltina",         uf:"GO", taxa:84.07 },
+  { pos:19, municipio:"Chapecó",            uf:"SC", taxa:81.53 },
+  { pos:20, municipio:"Sinop",              uf:"MT", taxa:81.47 },
+  { pos:21, municipio:"Piraquara",          uf:"PR", taxa:80.04 },
+  { pos:22, municipio:"Ponta Grossa",       uf:"PR", taxa:79.45 },
+  { pos:23, municipio:"Abaetetuba",         uf:"PA", taxa:78.36 },
+  { pos:24, municipio:"Toledo",             uf:"PR", taxa:78.17 },
+  { pos:25, municipio:"Itacoatiara",        uf:"AM", taxa:76.43 },
+  { pos:26, municipio:"Viamão",             uf:"RS", taxa:74.53 },
+  { pos:27, municipio:"Paragominas",        uf:"PA", taxa:73.55 },
+  { pos:28, municipio:"Guarapuava",         uf:"PR", taxa:72.60 },
+  { pos:29, municipio:"Ji-Paraná",          uf:"RO", taxa:71.04 },
+  { pos:30, municipio:"Fazenda Rio Grande", uf:"PR", taxa:70.59 },
+  { pos:31, municipio:"Rio Verde",          uf:"GO", taxa:69.74 },
+  { pos:32, municipio:"Almirante Tamandaré",uf:"PR", taxa:69.72 },
+  { pos:33, municipio:"Itaituba",           uf:"PA", taxa:69.57 },
+  { pos:34, municipio:"Santa Maria",        uf:"RS", taxa:68.73 },
+  { pos:35, municipio:"Jataí",              uf:"GO", taxa:67.93 },
+  { pos:36, municipio:"Três Lagoas",        uf:"MS", taxa:67.88 },
+  { pos:37, municipio:"Palmas",             uf:"TO", taxa:67.67 },
+  { pos:38, municipio:"Gravataí",           uf:"RS", taxa:67.56 },
+  { pos:39, municipio:"Campo Mourão",       uf:"PR", taxa:66.77 },
+  { pos:40, municipio:"Foz do Iguaçu",      uf:"PR", taxa:66.67 },
+  { pos:41, municipio:"Paranaguá",          uf:"PR", taxa:64.74 },
+  { pos:42, municipio:"Tatuí",              uf:"SP", taxa:63.78 },
+  { pos:43, municipio:"Cuiabá",             uf:"MT", taxa:63.70 },
+  { pos:44, municipio:"Novo Gama",          uf:"GO", taxa:63.50 },
+  { pos:45, municipio:"Balneário Camboriú", uf:"SC", taxa:63.42 },
+  { pos:46, municipio:"Cariacica",          uf:"ES", taxa:63.12 },
+  { pos:47, municipio:"Porto Seguro",       uf:"BA", taxa:62.98 },
+  { pos:48, municipio:"Alvorada",           uf:"RS", taxa:62.33 },
+  { pos:49, municipio:"Uruguaiana",         uf:"RS", taxa:62.04 },
+  { pos:50, municipio:"Castanhal",          uf:"PA", taxa:61.66 },
+];
+
+const dataCelular = [
+  { pos:1,  municipio:"São Luís",         uf:"MA", taxa:1599.73 },
+  { pos:2,  municipio:"Belém",            uf:"PA", taxa:1452.24 },
+  { pos:3,  municipio:"São Paulo",        uf:"SP", taxa:1425.37 },
+  { pos:4,  municipio:"Salvador",         uf:"BA", taxa:1396.69 },
+  { pos:5,  municipio:"Lauro de Freitas", uf:"BA", taxa:1391.99 },
+  { pos:6,  municipio:"Porto Velho",      uf:"RO", taxa:1363.05 },
+  { pos:7,  municipio:"Timon",            uf:"MA", taxa:1335.05 },
+  { pos:8,  municipio:"Olinda",           uf:"PE", taxa:1155.71 },
+  { pos:9,  municipio:"Teresina",         uf:"PI", taxa:1154.61 },
+  { pos:10, municipio:"Recife",           uf:"PE", taxa:1113.93 },
+  { pos:11, municipio:"Cariacica",        uf:"ES", taxa:1088.46 },
+  { pos:12, municipio:"Ananindeua",       uf:"PA", taxa:1077.51 },
+  { pos:13, municipio:"Vitória",          uf:"ES", taxa:1027.13 },
+  { pos:14, municipio:"Natal",            uf:"RN", taxa:1019.90 },
+  { pos:15, municipio:"Praia Grande",     uf:"SP", taxa:998.69 },
+  { pos:16, municipio:"Paço do Lumiar",   uf:"MA", taxa:990.77 },
+  { pos:17, municipio:"Belo Horizonte",   uf:"MG", taxa:943.87 },
+  { pos:18, municipio:"Florianópolis",    uf:"SC", taxa:923.38 },
+  { pos:19, municipio:"Marituba",         uf:"PA", taxa:911.78 },
+  { pos:20, municipio:"Fortaleza",        uf:"CE", taxa:907.24 },
+];
+
+// ── Scoring & Consolidated Ranking ──
+function buildRanking() {
+  const list = [];
+  const added = new Set();
+  
+  function attemptAdd(d, tag, rawObj) {
+    const key = d.municipio + '|' + d.uf;
+    if(!added.has(key)) {
+      added.add(key);
+      list.push({
+        municipio: d.municipio,
+        uf: d.uf,
+        primaryTag: tag,
+        tags: new Set([tag]),
+        details: { [tag]: { raw: rawObj } }
+      });
+    } else {
+      // Find the existing item and add the supplementary tag/data
+      const item = list.find(x => x.municipio === d.municipio && x.uf === d.uf);
+      if(item) {
+        item.tags.add(tag);
+        if(!item.details[tag]) item.details[tag] = { raw: rawObj };
+      }
+    }
+  }
+
+  // 1. MVI — Top 10
+  dataMVI.forEach(d => attemptAdd(d, 'mvi', d));
+  // 2. MDIP Absoluta — Top 5
+  dataMDIP.slice(0, 5).forEach(d => attemptAdd(d, 'mdip', d));
+  // 3. MDIP Proporcional — Top 5 (superam 50%)
+  dataMDIPProp.slice(0, 5).forEach(d => attemptAdd(d, 'mdip_prop', d));
+  // 4. Estupro — Top 5
+  dataEstupro.slice(0, 5).forEach(d => attemptAdd(d, 'estupro', d));
+  // 5. Celular — Top 5
+  dataCelular.slice(0, 5).forEach(d => attemptAdd(d, 'celular', d));
+
+  return list.slice(0, 24); // Garantindo forçosamente que a lista terá menos de 25
+}
+
+const ranking = buildRanking();
+document.addEventListener("DOMContentLoaded", () => {
+  const el = document.getElementById("total-municipios");
+  if(el) el.innerText = ranking.length;
+});
+
+// ── Tag colors ──
+const tagMeta = {
+  capital:  { cls: 'tag-capital', label: 'Capital' },
+  mvi:      { cls: 'tag-mvi',     label: 'Mortes Violentas' },
+  mdip:     { cls: 'tag-mdip',    label: 'Letalidade Policial' },
+  mdip_prop:{ cls: 'tag-mdip',    label: 'Letalidade Policial (%)' },
+  estupro:  { cls: 'tag-estupro', label: 'Crimes Sexuais' },
+  celular:  { cls: 'tag-celular', label: 'Celulares Roubados' },
+};
+
+const barColors = {
+  capital:  '#94a3b8',
+  mvi:      '#ef4444',
+  mdip:     '#f97316',
+  mdip_prop:'#f97316',
+  estupro:  '#8b5cf6',
+  celular:  '#3b82f6',
+};
+
+// ── Render Geral ──
+function renderGeral() {
+  const grid = document.getElementById('ranking-geral');
+  ranking.forEach((item, i) => {
+    const pos = i + 1;
+    const tags = [...item.tags].map(t => `<span class="tag ${tagMeta[t].cls}">${tagMeta[t].label}</span>`).join('');
+    const barColor = item.primaryTag;
+    const cardClass = `rank-card`;
+    const numStyle = pos <= 3 ? '' : (pos <= 5 ? 'color:#fb923c' : 'color:#94a3b8');
+
+    grid.innerHTML += `
+      <div class="${cardClass}" onclick="openModal('${item.municipio}', '${item.uf}')" style="border-left: 4px solid ${barColors[barColor]}">
+        <div class="rank-number" style="${numStyle}">${pos}</div>
+        <div class="rank-info">
+          <h3>${item.municipio}</h3>
+          <div>
+            <span class="uf-badge">${item.uf}</span>
+            <span style="font-size:0.75rem;color:var(--text-muted)">Incidência consolidada</span>
+          </div>
+          <div class="tags">${tags}</div>
+        </div>
+      </div>`;
+  });
+}
+
+// ── Render MVI table ──
+function renderMVI() {
+  const tbody = document.getElementById('table-mvi');
+  const maxTaxa = dataMVI[0].taxa;
+  dataMVI.forEach(d => {
+    const barW = Math.round((d.taxa / maxTaxa) * 100);
+    tbody.innerHTML += `<tr>
+      <td class="pos">${d.pos}º</td>
+      <td class="municipio-cell">${d.municipio}</td>
+      <td><span class="uf-pill">${d.uf}</span></td>
+      <td class="value-cell value-red">${d.taxa.toFixed(1)}</td>
+      <td class="value-cell">${d.nabs}</td>
+      <td class="value-cell value-orange">${d.mdip_n}</td>
+      <td class="value-cell">${d.pct_mdip.toFixed(1)}%</td>
+      <td><div class="mini-bar"><div class="mini-bar-fill" style="background:#ef4444;width:${barW}px;max-width:120px"></div><span style="font-size:0.75rem;color:var(--text-muted)">${d.taxa.toFixed(0)}</span></div></td>
+    </tr>`;
+  });
+}
+
+// ── Render MDIP table ──
+function renderMDIP() {
+  const tbody = document.getElementById('table-mdip');
+  const maxT = dataMDIP[0].taxa;
+  dataMDIP.forEach(d => {
+    const w = Math.round((d.taxa / maxT) * 120);
+    tbody.innerHTML += `<tr>
+      <td class="pos">${d.pos}º</td>
+      <td class="municipio-cell">${d.municipio}</td>
+      <td><span class="uf-pill">${d.uf}</span></td>
+      <td class="value-cell value-orange">${d.taxa.toFixed(1)}</td>
+      <td><div class="mini-bar"><div class="mini-bar-fill" style="background:#f97316;width:${w}px;max-width:120px"></div></div></td>
+    </tr>`;
+  });
+
+  const tbody2 = document.getElementById('table-mdip-proporcao');
+  const maxP = dataMDIPProp[0].pct;
+  dataMDIPProp.forEach(d => {
+    const w = Math.round((d.pct / maxP) * 120);
+    tbody2.innerHTML += `<tr>
+      <td class="pos">${d.pos}º</td>
+      <td class="municipio-cell">${d.municipio}</td>
+      <td><span class="uf-pill">${d.uf}</span></td>
+      <td class="value-cell value-orange" style="font-size:1rem">${d.pct.toFixed(1)}%</td>
+      <td><div class="mini-bar"><div class="mini-bar-fill" style="background:#fb923c;width:${w}px;max-width:120px"></div></div></td>
+    </tr>`;
+  });
+}
+
+// ── Render Estupro table ──
+function renderEstupro() {
+  const tbody = document.getElementById('table-estupro');
+  const maxT = dataEstupro[0].taxa;
+  dataEstupro.forEach(d => {
+    const w = Math.round((d.taxa / maxT) * 120);
+    tbody.innerHTML += `<tr>
+      <td class="pos">${d.pos}º</td>
+      <td class="municipio-cell">${d.municipio}</td>
+      <td><span class="uf-pill">${d.uf}</span></td>
+      <td class="value-cell value-purple">${d.taxa.toFixed(1)}</td>
+      <td><div class="mini-bar"><div class="mini-bar-fill" style="background:#8b5cf6;width:${w}px;max-width:120px"></div></div></td>
+    </tr>`;
+  });
+}
+
+// ── Render Celular table ──
+function renderCelular() {
+  const tbody = document.getElementById('table-celular');
+  const maxT = dataCelular[0].taxa;
+  dataCelular.forEach(d => {
+    const w = Math.round((d.taxa / maxT) * 120);
+    tbody.innerHTML += `<tr>
+      <td class="pos">${d.pos}º</td>
+      <td class="municipio-cell">${d.municipio}</td>
+      <td><span class="uf-pill">${d.uf}</span></td>
+      <td class="value-cell value-blue">${d.taxa.toFixed(1)}</td>
+      <td><div class="mini-bar"><div class="mini-bar-fill" style="background:#3b82f6;width:${w}px;max-width:120px"></div></div></td>
+    </tr>`;
+  });
+}
+
+// ── Tab switcher ──
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── Modal Actions ──
+function openModal(mun, uf) {
+  const item = ranking.find(r => r.municipio === mun && r.uf === uf);
+  if(!item) return;
+
+  document.getElementById('modal-title').innerText = item.municipio;
+  document.getElementById('modal-subtitle').innerText = `${item.uf} • Base Consolidada de Anuário (2024/2025)`;
+
+  let html = '';
+  
+  if(item.details.mvi) {
+    let d = item.details.mvi.raw;
+    html += `<div class="detail-item"><div class="detail-label" style="color:#ef4444">Mortes Violentas Intencionais</div><div class="detail-value"><strong>${d.pos}º lugar</strong><small>Taxa: ${d.taxa} / 100k</small></div></div>`;
+  }
+  if(item.details.mdip) {
+    let d = item.details.mdip.raw;
+    html += `<div class="detail-item"><div class="detail-label" style="color:#f97316">Morte por Intervenção Policial</div><div class="detail-value"><strong>${d.pos}º lugar</strong><small>Taxa: ${d.taxa} / 100k</small></div></div>`;
+  }
+  if(item.details.mdip_prop) {
+    let d = item.details.mdip_prop.raw;
+    html += `<div class="detail-item"><div class="detail-label" style="color:#fb923c">Letalidade Policial (%)</div><div class="detail-value"><strong>${d.pos}º lugar</strong><small>Taxa: ${d.pct}%</small></div></div>`;
+  }
+  if(item.details.estupro) {
+    let d = item.details.estupro.raw;
+    html += `<div class="detail-item"><div class="detail-label" style="color:#8b5cf6">Estupro / Crimes Sexuais</div><div class="detail-value"><strong>${d.pos}º lugar</strong><small>Taxa: ${d.taxa} / 100k</small></div></div>`;
+  }
+  if(item.details.celular) {
+    let d = item.details.celular.raw;
+    html += `<div class="detail-item"><div class="detail-label" style="color:#3b82f6">Celulares Subtraídos</div><div class="detail-value"><strong>${d.pos}º lugar</strong><small>Taxa: ${d.taxa} / 100k</small></div></div>`;
+  }
+  if(item.details.capital && Object.keys(item.details).length === 1) {
+     html += `<div class="detail-item"><div class="detail-label" style="color:var(--text-muted)">Capital Analisada</div><div class="detail-value"><strong>Anuário Geral</strong><small>Inclusão oficial</small></div></div>`;
+  }
+
+  document.getElementById('modal-details-content').innerHTML = html;
+  document.getElementById('details-modal').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('details-modal').classList.remove('active');
+}
+
+// ── Init ──
+renderGeral();
+renderMVI();
+renderMDIP();
+renderEstupro();
+renderCelular();
+</script>
+</body>
+</html>
