@@ -454,7 +454,7 @@
   Fonte: Fórum Brasileiro de Segurança Pública / Secretarias Estaduais de Segurança Pública.</p>
   <div class="header-stats">
     <div class="header-stat"><span>2024</span><small>Ano de referência</small></div>
-    <div class="header-stat"><span><span id="total-municipios">--</span></span><small>Municípios Analisados</small></div>
+    <div class="header-stat"><span>25</span><small>Municípios Analisados</small></div>
     <div class="header-stat"><span>4</span><small>Indicadores (MVI, MDIP, Sexuais, Celulares)</small></div>
     <div class="header-stat"><span>+100 mil</span><small>Habitantes mínimos</small></div>
   </div>
@@ -829,10 +829,6 @@ function buildRanking() {
 }
 
 const ranking = buildRanking();
-document.addEventListener("DOMContentLoaded", () => {
-  const el = document.getElementById("total-municipios");
-  if(el) el.innerText = ranking.length;
-});
 
 // ── Tag colors ──
 const tagMeta = {
