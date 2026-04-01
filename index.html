@@ -224,6 +224,26 @@
       color: #818cf8;
       margin-right: 0.5rem;
     }
+    .fnp-status {
+      display: inline-block;
+      padding: 0.1rem 0.4rem;
+      border-radius: 0.3rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-right: 0.5rem;
+      vertical-align: top;
+    }
+    .fnp-status.adimplente {
+      background: rgba(0, 150, 64, 0.2);
+      color: var(--fnp-green);
+      border: 1px solid rgba(0, 150, 64, 0.4);
+    }
+    .fnp-status.none {
+      background: rgba(148, 163, 184, 0.1);
+      color: var(--text-muted);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+    }
     .rank-info .tags {
       display: flex;
       gap: 0.35rem;
@@ -452,6 +472,7 @@
   <h1>Ranking dos Municípios com Maiores<br>Problemas de Segurança Pública</h1>
   <p>Dados referentes ao ano de 2024. Municípios com população igual ou superior a 100 mil habitantes.
   Fonte: Fórum Brasileiro de Segurança Pública / Secretarias Estaduais de Segurança Pública.</p>
+  <p style="margin-top: 0.75rem; color: #93c5fd; font-size: 0.85rem;">Última atualização: 01/04/2026</p>
   <div class="header-stats">
     <div class="header-stat"><span>2024</span><small>Ano de referência</small></div>
     <div class="header-stat"><span>25</span><small>Municípios Analisados</small></div>
@@ -656,6 +677,37 @@
 </div>
 
 <script>
+// ── FNP Adimplentes ──
+const fnpAdimplentes = new Set([
+  "Abaetetuba|PA", "Águas Lindas de Goiás|GO", "Almirante Tamandaré|PR", "Amparo|SP", 
+  "Angra dos Reis|RJ", "Aparecida de Goiânia|GO", "Apucarana|PR", "Aracaju|SE", "Araçatuba|SP", 
+  "Araguaína|TO", "Bagé|RS", "Barcarena|PA", "Batatais|SP", "Belém|PA", "Belo Horizonte|MG", 
+  "Betim|MG", "Blumenau|SC", "Boa Vista|RR", "Cabo de Santo Agostinho|PE", "Cáceres|MT", 
+  "Cachoeiro de Itapemirim|ES", "Camaragibe|PE", "Campina Grande|PB", "Campinas|SP", 
+  "Campo Grande|MS", "Campos do Jordão|SP", "Candeias|BA", "Canoas|RS", "Caruaru|PE", 
+  "Cascavel|PR", "Conde|PB", "Contagem|MG", "Curitiba|PR", "Curvelo|MG", "Diadema|SP", 
+  "Divinópolis|MG", "Feira de Santana|BA", "Ferraz de Vasconcelos|SP", "Florianópolis|SC", 
+  "Fortaleza|CE", "Francisco Morato|SP", "Franco da Rocha|SP", "Garanhuns|PE", "Goiânia|GO", 
+  "Guanambi|BA", "Guarapari|ES", "Guarapuava|PR", "Guarulhos|SP", "Hortolândia|SP", "Ibiúna|SP", 
+  "Igarassu|PE", "Ilhéus|BA", "Imperatriz|MA", "Itabira|MG", "Itabirito|MG", "Itabuna|BA", 
+  "Itajaí|SC", "Itaúna|MG", "Ituiutaba|MG", "Jaboatão dos Guararapes|PE", "Jacareí|SP", "Jarinu|SP", 
+  "João Pessoa|PB", "Joinville|SC", "Juiz de Fora|MG", "Lavras|MG", "Lins|SP", "Londrina|PR", 
+  "Macapá|AP", "Maceió|AL", "Manaus|AM", "Maracaju|MS", "Maringá|PR", "Marituba|PA", 
+  "Mateus Leme|MG", "Mauá|SP", "Mesquita|RJ", "Mirassol d'Oeste|MT", "Mongaguá|SP", 
+  "Montes Claros|MG", "Mossoró|RN", "Muriaé|MG", "Navegantes|SC", "Naviraí|MS", "Niterói|RJ", 
+  "Nova Lima|MG", "Olinda|PE", "Osasco|SP", "Palmas|TO", "Parauapebas|PA", "Parintins|AM", 
+  "Passo Fundo|RS", "Patos de Minas|MG", "Paulínia|SP", "Paulista|PE", "Pelotas|RS", 
+  "Petrolina|PE", "Piracicaba|SP", "Piraquara|PR", "Poá|SP", "Pompéia|SP", "Ponta Grossa|PR", 
+  "Ponta Porã|MS", "Porto Alegre|RS", "Porto Velho|RO", "Praia Grande|SP", "Recife|PE", 
+  "Ribeirão das Neves|MG", "Rio Branco|AC", "Rio das Ostras|RJ", "Rio de Janeiro|RJ", 
+  "Rio Grande|RS", "Rio Verde|GO", "Sabará|MG", "Salvador|BA", "Santa Bárbara do Tugúrio|MG", 
+  "Santa Cruz do Capibaribe|PE", "Santana|AP", "Santo André|SP", "Santos|SP", 
+  "São Caetano do Sul|SP", "São Carlos|SP", "São José|SC", "São José dos Campos|SP", 
+  "São Lourenço da Mata|PE", "São Luís|MA", "São Paulo|SP", "São Vicente|SP", "Serra|ES", 
+  "Serra Talhada|PE", "Sinop|MT", "Sorocaba|SP", "Timon|MA", "Ubá|MG", "Uberlândia|MG", 
+  "Uruguaiana|RS", "Valinhos|SP", "Valparaíso de Goiás|GO", "Viana|ES", "Vitória|ES", 
+  "Vitória da Conquista|BA", "Vitória de Santo Antão|PE"
+]);
 
 // ── Raw Data ──
 const dataMVI = [
@@ -859,6 +911,10 @@ function renderGeral() {
     const cardClass = `rank-card`;
     const numStyle = pos <= 3 ? '' : (pos <= 5 ? 'color:#fb923c' : 'color:#94a3b8');
 
+    const fnpStatus = fnpAdimplentes.has(`${item.municipio}|${item.uf}`) 
+      ? `<span class="fnp-status adimplente">Adimplente FNP</span>` 
+      : `<span class="fnp-status none">Não Adimplente</span>`;
+
     grid.innerHTML += `
       <div class="${cardClass}" onclick="openModal('${item.municipio}', '${item.uf}')" style="border-left: 4px solid ${barColors[barColor]}">
         <div class="rank-number" style="${numStyle}">${pos}</div>
@@ -866,6 +922,7 @@ function renderGeral() {
           <h3>${item.municipio}</h3>
           <div>
             <span class="uf-badge">${item.uf}</span>
+            ${fnpStatus}
             <span style="font-size:0.75rem;color:var(--text-muted)">Incidência consolidada</span>
           </div>
           <div class="tags">${tags}</div>
