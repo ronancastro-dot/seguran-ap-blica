@@ -800,15 +800,13 @@ function buildRanking() {
     }
   }
 
-  // 1. MVI — Top 10
+  // 1. MVI — Top 10 (Quadro 01)
   dataMVI.forEach(d => attemptAdd(d, 'mvi', d));
-  // 2. MDIP Absoluta — Top 5
-  dataMDIP.slice(0, 5).forEach(d => attemptAdd(d, 'mdip', d));
-  // 3. MDIP Proporcional — Top 5 (superam 50%)
+  // 2. MDIP Proporcional — Top 5 (SOMENTE QUADRO 03 > 50%)
   dataMDIPProp.slice(0, 5).forEach(d => attemptAdd(d, 'mdip_prop', d));
-  // 4. Estupro — Top 5
+  // 3. Estupro — Top 5
   dataEstupro.slice(0, 5).forEach(d => attemptAdd(d, 'estupro', d));
-  // 5. Celular — Top 5
+  // 4. Celular — Top 5
   dataCelular.slice(0, 5).forEach(d => attemptAdd(d, 'celular', d));
 
   return list.slice(0, 24); // Garantindo forçosamente que a lista terá menos de 25
