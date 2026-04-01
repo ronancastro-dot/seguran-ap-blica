@@ -472,7 +472,6 @@
   <h1>Ranking dos Municípios com Maiores<br>Problemas de Segurança Pública</h1>
   <p>Dados referentes ao ano de 2024. Municípios com população igual ou superior a 100 mil habitantes.
   Fonte: Fórum Brasileiro de Segurança Pública / Secretarias Estaduais de Segurança Pública.</p>
-  <p style="margin-top: 0.75rem; color: #93c5fd; font-size: 0.85rem;">Última atualização: 01/04/2026</p>
   <div class="header-stats">
     <div class="header-stat"><span>2024</span><small>Ano de referência</small></div>
     <div class="header-stat"><span>25</span><small>Municípios Analisados</small></div>
@@ -677,6 +676,99 @@
 </div>
 
 <script>
+// ── População Estimada IBGE (DOU 2025) ──
+const popIBGE = {
+  "Balneário Camboriú|SC": "151.674",
+  "Três Lagoas|MS": "143.523",
+  "Chapecó|SC": "282.648",
+  "Florianópolis|SC": "587.486",
+  "Almirante Tamandaré|PR": "125.861",
+  "Guarapuava|PR": "189.630",
+  "Cametá|PA": "144.859",
+  "Tangará da Serra|MT": "114.603",
+  "Palmas|TO": "328.499",
+  "Sorriso|MT": "124.665",
+  "Tatuí|SP": "129.130",
+  "Camaçari|BA": "321.636",
+  "Teresina|PI": "905.692",
+  "Praia Grande|SP": "368.539",
+  "Porto Seguro|BA": "182.630",
+  "Novo Gama|GO": "107.663",
+  "Trindade|GO": "153.560",
+  "Rio Verde|GO": "241.494",
+  "Itacoatiara|AM": "113.917",
+  "Uruguaiana|RS": "120.819",
+  "Paço do Lumiar|MA": "153.158",
+  "Eunápolis|BA": "121.067",
+  "Simões Filho|BA": "120.419",
+  "Viamão|RS": "231.996",
+  "Cariacica|ES": "376.200",
+  "Vitória|ES": "343.378",
+  "Marituba|PA": "119.437",
+  "Campo Mourão|PR": "104.122",
+  "Belém|PA": "1.397.315",
+  "Alvorada|RS": "194.062",
+  "Paranaguá|PR": "150.104",
+  "Colombo|PR": "241.672",
+  "Gravataí|RS": "275.430",
+  "Fortaleza|CE": "2.578.483",
+  "São Luís|MA": "1.089.215",
+  "Itaituba|PA": "135.369",
+  "Vilhena|RO": "109.651",
+  "Porto Velho|RO": "517.709",
+  "Araucária|PR": "162.247",
+  "Toledo|PR": "160.701",
+  "São Lourenço da Mata|PE": "118.258",
+  "Feira de Santana|BA": "660.806",
+  "Macapá|AP": "489.676",
+  "Cabo de Santo Agostinho|PE": "218.049",
+  "Ananindeua|PA": "509.227",
+  "Ponta Grossa|PR": "375.632",
+  "Jataí|GO": "111.634",
+  "Itabaiana|SE": "109.250",
+  "Angra dos Reis|RJ": "179.142",
+  "Dourados|MS": "264.017",
+  "Nilópolis|RJ": "155.500",
+  "Jequié|BA": "169.201",
+  "Salvador|BA": "2.564.204",
+  "Japeri|RJ": "102.171",
+  "Cuiabá|MT": "691.875",
+  "Barcarena|PA": "139.076",
+  "Fazenda Rio Grande|PR": "165.943",
+  "Castanhal|PA": "209.126",
+  "Breves|PA": "116.058",
+  "Lauro de Freitas|BA": "219.564",
+  "Santos|SP": "429.547",
+  "Ji-Paraná|RO": "140.101",
+  "Boa Vista|RR": "485.477",
+  "Recife|PE": "1.588.376",
+  "São Vicente|SP": "338.326",
+  "Francisco Beltrão|PR": "102.312",
+  "Natal|RN": "784.249",
+  "Maracanaú|CE": "251.613",
+  "Foz do Iguaçu|PR": "297.352",
+  "Caucaia|CE": "378.406",
+  "Ariquemes|RO": "109.170",
+  "Maranguape|CE": "108.622",
+  "Juazeiro|BA": "256.122",
+  "Rio Branco|AC": "389.001",
+  "Santo Antônio de Jesus|BA": "109.791",
+  "Arapongas|PR": "124.838",
+  "Santana|AP": "118.803",
+  "Abaetetuba|PA": "172.344",
+  "Piraquara|PR": "127.433",
+  "São Paulo|SP": "11.904.961",
+  "Timon|MA": "182.711",
+  "Santa Maria|RS": "282.395",
+  "Luziânia|GO": "221.262",
+  "Belo Horizonte|MG": "2.415.872",
+  "Planaltina|GO": "112.304",
+  "Olinda|PE": "364.717",
+  "Sinop|MT": "223.780",
+  "Cambé|PR": "110.923",
+  "Paragominas|PA": "113.498",
+};
+
 // ── FNP Adimplentes ──
 const fnpAdimplentes = new Set([
   "Abaetetuba|PA", "Águas Lindas de Goiás|GO", "Almirante Tamandaré|PR", "Amparo|SP", 
@@ -915,12 +1007,14 @@ function renderGeral() {
       ? `<span class="fnp-status adimplente">Adimplente FNP</span>` 
       : `<span class="fnp-status none">Não Adimplente</span>`;
 
+    const populacao = popIBGE[`${item.municipio}|${item.uf}`] || "Não disponível";
+
     grid.innerHTML += `
       <div class="${cardClass}" onclick="openModal('${item.municipio}', '${item.uf}')" style="border-left: 4px solid ${barColors[barColor]}">
         <div class="rank-number" style="${numStyle}">${pos}</div>
         <div class="rank-info">
-          <h3>${item.municipio}</h3>
-          <div>
+          <h3>${item.municipio} <span style="font-size:0.75rem;color:var(--text-muted);font-weight:400;margin-left:0.3rem">Pop: ${populacao}</span></h3>
+          <div style="margin-top:0.2rem;margin-bottom:0.2rem">
             <span class="uf-badge">${item.uf}</span>
             ${fnpStatus}
             <span style="font-size:0.75rem;color:var(--text-muted)">Incidência consolidada</span>
@@ -936,11 +1030,18 @@ function renderMVI() {
   const tbody = document.getElementById('table-mvi');
   const maxTaxa = dataMVI[0].taxa;
   dataMVI.forEach(d => {
+    const populacao = popIBGE[`${d.municipio}|${d.uf}`] || "N/D";
+    const fnpStatus = fnpAdimplentes.has(`${d.municipio}|${d.uf}`) 
+      ? `<span class="fnp-status adimplente" style="scale:0.9">Adimplente FNP</span>` 
+      : `<span class="fnp-status none" style="scale:0.9">Não Adimplente</span>`;
     const barW = Math.round((d.taxa / maxTaxa) * 100);
     tbody.innerHTML += `<tr>
       <td class="pos">${d.pos}º</td>
       <td class="municipio-cell">${d.municipio}</td>
-      <td><span class="uf-pill">${d.uf}</span></td>
+            <td style="white-space:nowrap; padding: 0.5rem;">
+        <div><span class="uf-pill">${d.uf}</span> ${fnpStatus}</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.1rem">Pop: ${populacao}</div>
+      </td>
       <td class="value-cell value-red">${d.taxa.toFixed(1)}</td>
       <td class="value-cell">${d.nabs}</td>
       <td class="value-cell value-orange">${d.mdip_n}</td>
@@ -955,11 +1056,18 @@ function renderMDIP() {
   const tbody = document.getElementById('table-mdip');
   const maxT = dataMDIP[0].taxa;
   dataMDIP.forEach(d => {
+    const populacao = popIBGE[`${d.municipio}|${d.uf}`] || "N/D";
+    const fnpStatus = fnpAdimplentes.has(`${d.municipio}|${d.uf}`) 
+      ? `<span class="fnp-status adimplente" style="scale:0.9">Adimplente FNP</span>` 
+      : `<span class="fnp-status none" style="scale:0.9">Não Adimplente</span>`;
     const w = Math.round((d.taxa / maxT) * 120);
     tbody.innerHTML += `<tr>
       <td class="pos">${d.pos}º</td>
       <td class="municipio-cell">${d.municipio}</td>
-      <td><span class="uf-pill">${d.uf}</span></td>
+            <td style="white-space:nowrap; padding: 0.5rem;">
+        <div><span class="uf-pill">${d.uf}</span> ${fnpStatus}</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.1rem">Pop: ${populacao}</div>
+      </td>
       <td class="value-cell value-orange">${d.taxa.toFixed(1)}</td>
       <td><div class="mini-bar"><div class="mini-bar-fill" style="background:#f97316;width:${w}px;max-width:120px"></div></div></td>
     </tr>`;
@@ -968,11 +1076,18 @@ function renderMDIP() {
   const tbody2 = document.getElementById('table-mdip-proporcao');
   const maxP = dataMDIPProp[0].pct;
   dataMDIPProp.forEach(d => {
+    const populacao = popIBGE[`${d.municipio}|${d.uf}`] || "N/D";
+    const fnpStatus = fnpAdimplentes.has(`${d.municipio}|${d.uf}`) 
+      ? `<span class="fnp-status adimplente" style="scale:0.9">Adimplente FNP</span>` 
+      : `<span class="fnp-status none" style="scale:0.9">Não Adimplente</span>`;
     const w = Math.round((d.pct / maxP) * 120);
     tbody2.innerHTML += `<tr>
       <td class="pos">${d.pos}º</td>
       <td class="municipio-cell">${d.municipio}</td>
-      <td><span class="uf-pill">${d.uf}</span></td>
+            <td style="white-space:nowrap; padding: 0.5rem;">
+        <div><span class="uf-pill">${d.uf}</span> ${fnpStatus}</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.1rem">Pop: ${populacao}</div>
+      </td>
       <td class="value-cell value-orange" style="font-size:1rem">${d.pct.toFixed(1)}%</td>
       <td><div class="mini-bar"><div class="mini-bar-fill" style="background:#fb923c;width:${w}px;max-width:120px"></div></div></td>
     </tr>`;
@@ -984,11 +1099,18 @@ function renderEstupro() {
   const tbody = document.getElementById('table-estupro');
   const maxT = dataEstupro[0].taxa;
   dataEstupro.forEach(d => {
+    const populacao = popIBGE[`${d.municipio}|${d.uf}`] || "N/D";
+    const fnpStatus = fnpAdimplentes.has(`${d.municipio}|${d.uf}`) 
+      ? `<span class="fnp-status adimplente" style="scale:0.9">Adimplente FNP</span>` 
+      : `<span class="fnp-status none" style="scale:0.9">Não Adimplente</span>`;
     const w = Math.round((d.taxa / maxT) * 120);
     tbody.innerHTML += `<tr>
       <td class="pos">${d.pos}º</td>
       <td class="municipio-cell">${d.municipio}</td>
-      <td><span class="uf-pill">${d.uf}</span></td>
+            <td style="white-space:nowrap; padding: 0.5rem;">
+        <div><span class="uf-pill">${d.uf}</span> ${fnpStatus}</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.1rem">Pop: ${populacao}</div>
+      </td>
       <td class="value-cell value-purple">${d.taxa.toFixed(1)}</td>
       <td><div class="mini-bar"><div class="mini-bar-fill" style="background:#8b5cf6;width:${w}px;max-width:120px"></div></div></td>
     </tr>`;
@@ -1000,11 +1122,18 @@ function renderCelular() {
   const tbody = document.getElementById('table-celular');
   const maxT = dataCelular[0].taxa;
   dataCelular.forEach(d => {
+    const populacao = popIBGE[`${d.municipio}|${d.uf}`] || "N/D";
+    const fnpStatus = fnpAdimplentes.has(`${d.municipio}|${d.uf}`) 
+      ? `<span class="fnp-status adimplente" style="scale:0.9">Adimplente FNP</span>` 
+      : `<span class="fnp-status none" style="scale:0.9">Não Adimplente</span>`;
     const w = Math.round((d.taxa / maxT) * 120);
     tbody.innerHTML += `<tr>
       <td class="pos">${d.pos}º</td>
       <td class="municipio-cell">${d.municipio}</td>
-      <td><span class="uf-pill">${d.uf}</span></td>
+            <td style="white-space:nowrap; padding: 0.5rem;">
+        <div><span class="uf-pill">${d.uf}</span> ${fnpStatus}</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.1rem">Pop: ${populacao}</div>
+      </td>
       <td class="value-cell value-blue">${d.taxa.toFixed(1)}</td>
       <td><div class="mini-bar"><div class="mini-bar-fill" style="background:#3b82f6;width:${w}px;max-width:120px"></div></div></td>
     </tr>`;
