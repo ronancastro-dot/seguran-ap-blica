@@ -800,18 +800,32 @@ function buildRanking() {
     }
   }
 
-  // 1. MVI — Top 10
-  dataMVI.forEach(d => attemptAdd(d, 'mvi', d));
-  // 2. MDIP Absoluta — Top 5
-  dataMDIP.slice(0, 5).forEach(d => attemptAdd(d, 'mdip', d));
-  // 3. MDIP Proporcional — Top 5 (superam 50%)
-  dataMDIPProp.slice(0, 5).forEach(d => attemptAdd(d, 'mdip_prop', d));
-  // 4. Estupro — Top 5
-  dataEstupro.slice(0, 5).forEach(d => attemptAdd(d, 'estupro', d));
-  // 5. Celular — Top 5
-  dataCelular.slice(0, 5).forEach(d => attemptAdd(d, 'celular', d));
+  function supplementAdd(d, tag, rawObj) {
+    const key = d.municipio + '|' + d.uf;
+    if(added.has(key)) {
+      const item = list.find(x => x.municipio === d.municipio && x.uf === d.uf);
+      if(item) {
+        item.tags.add(tag);
+        if(!item.details[tag]) item.details[tag] = { raw: rawObj };
+      }
+    }
+  }
 
-  return list.slice(0, 24); // Garantindo forçosamente que a lista terá menos de 25
+  // REGRAS PRIMÁRIAS (Definem quem ENTRA na lista)
+  // 1. MVI — Top 10 (Quadro 01)
+  dataMVI.forEach(d => attemptAdd(d, 'mvi', d));
+  // 2. MDIP Proporcional — Top 5 (SOMENTE QUADRO 03 > 50%)
+  dataMDIPProp.slice(0, 5).forEach(d => attemptAdd(d, 'mdip_prop', d));
+  // 3. Estupro — Top 5
+  dataEstupro.slice(0, 5).forEach(d => attemptAdd(d, 'estupro', d));
+  // 4. Celular — Expandido para Top 10 a pedido do usuário
+  dataCelular.slice(0, 10).forEach(d => attemptAdd(d, 'celular', d));
+
+  // REGRAS SECUNDÁRIAS / COMPLEMENTARES (Apenas injetam tags e dados extras em quem JÁ ESTÁ na lista)
+  // Letalidade Absoluta (Quadro 02) inteira cruzada: garante que Jequié receba seus dados de MDIP Absolute no popup e a tag laranja.
+  dataMDIP.forEach(d => supplementAdd(d, 'mdip', d));
+
+  return list; // Removida a trava matemática de 24 itens para acomodar a maior inclusão celular
 }
 
 const ranking = buildRanking();
